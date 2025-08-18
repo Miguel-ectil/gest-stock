@@ -1,0 +1,36 @@
+# Ambiente virtual (não deve ser versionado)
+venv/
+env/
+.venv/
+.env/
+
+# Caches do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Arquivos criados pela instalação de dependências
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Arquivos de pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Arquivos de configuração de IDEs (opcional)
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebook checkpoints (caso use notebooks)
+.ipynb_checkpoints/
