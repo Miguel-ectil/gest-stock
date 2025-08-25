@@ -16,6 +16,6 @@ def init_routes(app):
     def get_user(id):
         return UserController.get_user(id)
     
-    @app.route('/user/:id', methods=['GET'])
+    @app.route('/user/:id', methods=['PUT'])
     def update_user(id):
         return UserController.update_user(id)
