@@ -29,3 +29,35 @@ class UserController:
             "mensagem": "Usuário salvo com sucesso",
             "usuarios": user.to_dict()
         }), 200)
+
+    @staticmethod
+    def get_user(id):
+        user = UserService.get_user(id)
+        return make_response(jsonify(user.to_dict()), 200)
+    
+    @staticmethod
+    def update_user(id):
+        data = request.get_json()
+
+        name = data.get('name')
+        cnpj = data.get('cnpj')
+        email = data.get('email')
+        celular = data.get('celular')
+        password = data.get('password')
+        status = data.get('status')
+
+        user = UserService.update_user(
+            id=id,
+            name=name,
+            cnpj=cnpj,
+            email=email,
+            celular=celular,
+            password=password,
+            status=status
+        )
+        if not user:
+            return make_response(jsonify({"erro": "Usuário não encontrado"}), 404)
+
+        return make_response(jsonify({
+            "mensagem": "dados do usuário atualizado com sucesso",
+        }), 200)

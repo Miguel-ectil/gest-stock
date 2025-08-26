@@ -14,5 +14,6 @@ class UserDomain:
             "email": self.email,
             "celular": self.celular,
             "status": self.status
-            # ⚠️ Atenção: evite retornar a senha por segurança
         }
+    
+    
