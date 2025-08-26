@@ -12,6 +12,10 @@ def init_routes(app):
     def register_user():
         return UserController.register_user()
 
+    @app.route('/user/confirm', methods=['POST'])
+    def confirm_user():
+        return UserController.confirm_user()
+
     @app.route('/user/<int:id>', methods=['GET'])
     def get_user(id):
         return UserController.get_user(id)

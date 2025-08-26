@@ -9,6 +9,8 @@ class User(db.Model):
     celular = Column(String(20), nullable=False)  # Adicionado
     password = Column(String(255), nullable=False)
     status = Column(Boolean, default=False)
+    token = Column(String(6), nullable=True)       # novo campo para token
+    confirmed = Column(Boolean, default=False)
 
     def to_dict(self):
         return {
