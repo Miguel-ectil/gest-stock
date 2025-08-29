@@ -5,13 +5,15 @@ from src.Infrastructure.Model.user import User
 from src.config.data_base import db 
 from twilio.rest import Client
 from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv() 
 
 class UserService:
     @staticmethod
     def create_user(name, cnpj, email, celular, password, status=False):
-       
+
+        hashed_password = generate_password_hash(password)
         token = str(random.randint(100000, 999999))
         
         new_user = UserDomain(name, cnpj, email, celular, password, status, token=token, confirmed=False)
@@ -91,3 +93,21 @@ class UserService:
 
         db.session.commit()
         return user
+
+    @staticmethod
+    def login_user(email, password):
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return {"success": False, "message": "Usuário não encontrado"}
+
+        if not user.confirmed:
+            return {"success": False, "message": "Conta não confirmada"}
+
+        if not user.status:
+            return {"success": False, "message": "Conta inativa"}
+
+        if not check_password_hash(user.password, password):
+            return {"success": False, "message": "Senha incorreta"}
+
+        return {"success": True, "message": "Login realizado com sucesso", "user": user}
