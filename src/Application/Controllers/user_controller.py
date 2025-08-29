@@ -39,7 +39,7 @@ class UserController:
         }), 201)
 
     @staticmethod
-    def confirm_user(): #<--- criar regra: se o codigo for confirmado com sucessso a coluna status vira True (FERNANDO) (Somente sellers ativados podem fazer login e gerenciar produtos.)
+    def confirm_user():
         data = request.get_json()
 
         user_id = data.get('id')
@@ -48,11 +48,15 @@ class UserController:
         if not user_id or not token:
             return make_response(jsonify({"erro": "ID e token são obrigatórios"}), 400)
 
-        success = UserService.confirm_user(user_id, token)
+        confirmed = UserService.confirm_user(user_id, token)
 
-        if success:
-            return make_response(jsonify({"mensagem": "Usuário confirmado com sucesso"}), 200)
-        return make_response(jsonify({"erro": "Token inválido ou usuário não encontrado"}), 400)
+        if confirmed:
+            return make_response(jsonify({
+                "mensagem": "Usuário confirmado com sucesso",
+            }), 200)
+        else:
+            return make_response(jsonify({"erro": "Token inválido ou usuário não encontrado"}), 400)
+
 
     @staticmethod
     def get_user(id):

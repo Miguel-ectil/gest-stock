@@ -56,14 +56,14 @@ class UserService:
     def confirm_user(user_id, token):
         user = User.query.get(user_id)
         if not user:
-            return None
+            return False
 
         if user.token == token:
             user.confirmed = True
-            user.status = True  # <-- Certifique-se de que está aqui
+            user.status = True
             db.session.commit()
-            return user  # <-- retorna o usuário para o controller
-        return None
+            return True  # Só indica sucesso
+        return False
 
 
     @staticmethod
