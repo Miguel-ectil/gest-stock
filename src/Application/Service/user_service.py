@@ -60,9 +60,11 @@ class UserService:
 
         if user.token == token:
             user.confirmed = True
+            user.status = True  # <-- Certifique-se de que está aqui
             db.session.commit()
-            return True
-        return False
+            return user  # <-- retorna o usuário para o controller
+        return None
+
 
     @staticmethod
     def get_user(id):
