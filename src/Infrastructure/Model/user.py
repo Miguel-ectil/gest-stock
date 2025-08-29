@@ -1,10 +1,16 @@
+from sqlalchemy import Column, Integer, String, Boolean
 from src.config.data_base import db 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    cnpj = Column(String(18), nullable=False) 
+    email = Column(String(255), nullable=False)
+    celular = Column(String(20), nullable=False)  
+    password = Column(String(255), nullable=False)
+    status = Column(Boolean, default=False)
+    token = Column(String(6), nullable=True)      
+    confirmed = Column(Boolean, default=False)
 
     def to_dict(self):
         return {
