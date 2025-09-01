@@ -100,3 +100,29 @@ class UserController:
         return make_response(jsonify({
             "mensagem": "Dados do usuário atualizados com sucesso",
         }), 200)
+
+    @staticmethod
+    def login_user(data):
+        email = data.get('email')
+        password = data.get('password')
+
+        if not email or not password:
+            return make_response(jsonify({"erro": "Email e senha são obrigatórios"}), 400)
+
+        response = UserService.login_user(email, password)
+
+        if not response["success"]:
+            return make_response(jsonify({"erro": response["message"]}), 401)
+
+        user = response["user"]
+
+        return make_response(jsonify({
+            "mensagem": response["message"],
+            "usuario": {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "status": user.status,
+                "confirmed": user.confirmed
+            }
+        }), 200)

@@ -1,5 +1,5 @@
 from src.Application.Controllers.user_controller import UserController
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 
 def init_routes(app):    
     @app.route('/api', methods=['GET'])
@@ -23,3 +23,9 @@ def init_routes(app):
     @app.route('/user/<int:id>', methods=['PUT'])
     def update_user(id):
         return UserController.update_user(id)
+
+    @app.route('/user/login', methods=['POST'])
+    def login_user():
+        data = request.json 
+        return UserController.login_user(data)
+
