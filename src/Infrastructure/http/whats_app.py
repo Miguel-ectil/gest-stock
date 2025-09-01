@@ -1,7 +1,6 @@
 from twilio.rest import Client
 import os
 
-
 ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 FROM_NUMBER = "whatsapp:+14155238886"  # número fornecido pelo Twilio

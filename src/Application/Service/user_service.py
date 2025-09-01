@@ -6,6 +6,8 @@ from src.config.data_base import db
 from twilio.rest import Client
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
+from src.Infrastructure.http.whats_app import send_whatsapp_message
+
 
 load_dotenv() 
 
@@ -15,14 +17,15 @@ class UserService:
 
         hashed_password = generate_password_hash(password)
         token = str(random.randint(100000, 999999))
-        
-        new_user = UserDomain(name, cnpj, email, celular, password, status, token=token, confirmed=False)
+
+        new_user = UserDomain(name, cnpj, email, celular, hashed_password, status, token=token, confirmed=False)
+
         user = User(
             name=new_user.name,
             cnpj=new_user.cnpj,
             email=new_user.email,
             celular=new_user.celular,
-            password=new_user.password,
+            password=new_user.password,  # Agora está usando o hash
             status=new_user.status,
             token=new_user.token,
             confirmed=new_user.confirmed
@@ -30,29 +33,10 @@ class UserService:
 
         db.session.add(user)
         db.session.commit()
-
        
-        UserService.send_whatsapp_token(user.celular, token)  #<- envia o token pelo zap
+        send_whatsapp_message(user.celular, token)
 
         return user
-
-    @staticmethod
-    def send_whatsapp_token(user_phone, token):
-        account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-        auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-        content_sid = os.getenv("TWILIO_CONTENT_SID")
-        from_number = os.getenv("TWILIO_FROM_NUMBER")
-
-        client = Client(account_sid, auth_token)
-
-        message = client.messages.create(
-            from_=from_number,
-            content_sid=content_sid,
-            content_variables=f'{{"1":"{token}"}}',
-            to=f'whatsapp:{user_phone}'
-        )
-
-        return message.sid
 
     @staticmethod
     def confirm_user(user_id, token):
@@ -97,7 +81,7 @@ class UserService:
     @staticmethod
     def login_user(email, password):
         user = User.query.filter_by(email=email).first()
-
+        print(user)
         if not user:
             return {"success": False, "message": "Usuário não encontrado"}
 
@@ -108,6 +92,7 @@ class UserService:
             return {"success": False, "message": "Conta inativa"}
 
         if not check_password_hash(user.password, password):
+            print(password)
             return {"success": False, "message": "Senha incorreta"}
 
         return {"success": True, "message": "Login realizado com sucesso", "user": user}
