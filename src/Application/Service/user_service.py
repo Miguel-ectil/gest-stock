@@ -14,18 +14,24 @@ load_dotenv()
 class UserService:
     @staticmethod
     def create_user(name, cnpj, email, celular, password, status=False):
-
         hashed_password = generate_password_hash(password)
         token = str(random.randint(100000, 999999))
 
-        new_user = UserDomain(name, cnpj, email, celular, hashed_password, status, token=token, confirmed=False)
+        message_sid = send_whatsapp_message(celular, token)
+        if not message_sid:
+            raise Exception("Não foi possível enviar a mensagem de confirmação via WhatsApp.")
+
+        new_user = UserDomain(
+            name, cnpj, email, celular, hashed_password, status, 
+            token=token, confirmed=False
+        )
 
         user = User(
             name=new_user.name,
             cnpj=new_user.cnpj,
             email=new_user.email,
             celular=new_user.celular,
-            password=new_user.password,  # Agora está usando o hash
+            password=new_user.password,  
             status=new_user.status,
             token=new_user.token,
             confirmed=new_user.confirmed
@@ -33,10 +39,8 @@ class UserService:
 
         db.session.add(user)
         db.session.commit()
-       
-        send_whatsapp_message(user.celular, token)
-
         return user
+
 
     @staticmethod
     def confirm_user(user_id, token):

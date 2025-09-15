@@ -3,17 +3,17 @@ from src.Application.Service.user_service import UserService
 
 class UserController:
     @staticmethod
-    def register_user(): #<---- criar regras para não permitir cadastro duplicado (FERNANDO)
+    def register_user(): 
         data = request.get_json()
 
         name = data.get('name')
         cnpj = data.get('cnpj')
         email = data.get('email') 
-        celular = data.get('celular') #<--- criar regra para o numero de celular fixcar no padrão (FERNANDO) ex. +5511987404871 tem que começar com +55 e 9 dígitos
-        password = data.get('password') #<--- criar regra para senha forte (FERNANDO) ex. no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial
+        celular = data.get('celular') 
+        password = data.get('password')
         status = data.get('status', False) 
 
-        if not name or not cnpj or not email or not celular or not password: #<--- fazer o tratamento de erros (FERNANDO) ex. cnpj tem que ser 14 dígitos ou email tem que ser um email válido ou numero de celular não digitado...
+        if not name or not cnpj or not email or not celular or not password: 
             return make_response(jsonify({"erro": "Missing required fields"}), 400) 
 
         user = UserService.create_user(
