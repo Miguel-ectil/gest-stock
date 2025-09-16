@@ -1,5 +1,6 @@
 from flask import request, jsonify, make_response
 from src.Application.Service.user_service import UserService
+from src.Application.Utils.auth_utils import generate_token
 
 class UserController:
     @staticmethod
@@ -116,13 +117,16 @@ class UserController:
 
         user = response["user"]
 
+        token = generate_token(user.id)
+
         return make_response(jsonify({
             "mensagem": response["message"],
+            "token": token,
             "usuario": {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email,
-                "status": user.status,
-                "confirmed": user.confirmed
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "status": user.status,
+            "confirmed": user.confirmed
             }
         }), 200)
