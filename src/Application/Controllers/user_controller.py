@@ -76,7 +76,7 @@ class UserController:
         }), 200)
 
     @staticmethod
-    def update_user(id): #<--- fazer tratamento de erros (FERNANDO) 
+    def update_user(id):
         data = request.get_json()
 
         name = data.get('name')
