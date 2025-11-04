@@ -38,3 +38,26 @@ def init_routes(app):
         data = request.json 
         return UserController.login_user(data)
 
+
+#---- rotas produtos ----
+    @app.route('/api/products', methods=['GET'])
+    def list_products():
+
+        return ProductController.list_products()
+    
+    @app.route('/api/products/<int:id>', methods=['GET'])
+    def get_product(id):
+        return ProductController.get_product(id)
+    
+    @app.route('/api/products', methods=['POST'])
+    def create_product():
+        return ProductController.create_product()
+    
+    @app.route('/api/products/<int:id>', methods=['PUT'])
+    def update_product(id):
+        if current_user_id != str(id):
+            return ProductController.update_product(id)
+    
+    @app.route('/api/products/<int:id>/inactivate', methods=['PATCH'])
+    def inactivate_product(id):
+        return ProductController.inactivate_product(id)
