@@ -46,7 +46,7 @@ def init_routes(app):
 
         return ProdutoController.list_products()
     
-    @app.route('/api/products/<int:id>', methods=['GET'])
+    @app.route('/api/products/<int:id_produto>', methods=['GET'])
     def get_product(id_produto):
         return ProdutoController.get_product(id_produto)
     
@@ -54,11 +54,10 @@ def init_routes(app):
     def create_product():
         return ProdutoController.create_product()
     
-    @app.route('/api/products/<int:id>', methods=['PUT'])
+    @app.route('/api/products/<int:id_produto>', methods=['PUT'])
     def update_product(id_produto):
-        if current_user_id != str(id_produto):
             return ProdutoController.update_product(id_produto)
     
-    @app.route('/api/products/<int:id>/inactivate', methods=['PATCH'])
+    @app.route('/api/products/<int:id_produto>/inactivate', methods=['PATCH'])
     def inactivate_product(id_produto):
         return ProdutoController.inactivate_product(id_produto)
