@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from src.config.data_base import db 
+
 class Produto(db.Model):
     __tablename__ = 'users'
     id_produto = Column(Integer, primary_key=True)
@@ -9,7 +10,6 @@ class Produto(db.Model):
     status = Column(Boolean, default=True)
     imagem = Column(String(255), nullable=False)
 
-    
     def to_dict(self):
         return {
             "id": self.id_produto,

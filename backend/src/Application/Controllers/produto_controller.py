@@ -16,7 +16,7 @@ class ProdutoController:
         if not name or preco is None or quantidade is None or not imagem:
             return make_response(jsonify({"erro": "Missing required fields"}), 400)
 
-        produto = ProdutoService.create_produto(
+        produto = ProdutoService.create_product(
             name=name,
             preco=preco,
             quantidade=quantidade,
@@ -30,7 +30,7 @@ class ProdutoController:
     
     @staticmethod
     def get_product(id_produto):
-        produto = ProdutoService.get_produto(id_produto)
+        produto = ProdutoService.get_product(id_produto)
         if not produto:
             return make_response(jsonify({"erro": "Produto não encontrado"}), 404)
 
@@ -43,4 +43,4 @@ class ProdutoController:
             "status": produto.status, 
             "imagem": produto.imagem
     
-        }), 200)
+        }), 200)            
