@@ -43,4 +43,59 @@ class ProdutoController:
             "status": produto.status, 
             "imagem": produto.imagem
     
-        }), 200)            
+        }), 200) 
+
+    @staticmethod
+    def list_products():
+        produtos = ProdutoService.list_products()
+        if not produtos:
+            return make_response(jsonify({"erro": "Nenhum produto encontrado"}), 404)
+        
+        return produtos 
+    
+    @staticmethod
+    def update_product(id_produto):
+        data = request.get_json()
+
+        name = data.get('name')
+        preco = data.get('preco')
+        quantidade = data.get('quantidade')
+        status = data.get('status')
+        imagem = data.get('imagem')
+
+        produto = ProdutoService.update_product(
+            id_produto,
+            name=name,
+            preco=preco,
+            quantidade=quantidade,
+            status=status,
+            imagem=imagem
+        )
+
+        if not produto:
+            return make_response(jsonify({"erro": "Produto não encontrado"}), 404)
+
+        return make_response(jsonify({
+            "mensagem": "Produto atualizado com sucesso.",
+            "produto": {
+                "id_produto": produto.id_produto,
+                "name": produto.name,
+                "preco": produto.preco,
+                "quantidade": produto.quantidade,
+                "status": produto.status, 
+                "imagem": produto.imagem
+            }
+        }), 200)
+    
+    @staticmethod
+    def inactive_product(id_produto):
+        produto = ProdutoService.inactive_product(id_produto)
+        if not produto:
+            return make_response(jsonify({"erro": "Produto não encontrado"}), 404)
+
+        return make_response(jsonify({
+            "mensagem": "Produto inativado com sucesso.",
+           
+            }), 200)
+    
+    
