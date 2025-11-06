@@ -13,17 +13,19 @@ class ProdutoController:
         imagem = data.get('imagem')
         status = data.get('status', True)
 
-        if not name or preco is None or quantidade is None or not imagem:
+        if not name or preco is None or quantidade is None:
             return make_response(jsonify({"erro": "Missing required fields"}), 400)
+
+        id_vendedor = data.get('id_vendedor')
 
         produto = ProdutoService.create_product(
             name=name,
             preco=preco,
             quantidade=quantidade,
             imagem=imagem,
-            status=status
+            status=status,
+            id_vendedor=id_vendedor
         )
-
         return make_response(jsonify({
             "mensagem": "Produto criado com sucesso.",
         }), 201)
@@ -41,7 +43,8 @@ class ProdutoController:
             "preco": produto.preco,
             "quantidade": produto.quantidade,
             "status": produto.status, 
-            "imagem": produto.imagem
+            "imagem": produto.imagem,
+            "id_vendedor":produto.id_vendedor
     
         }), 200) 
 
@@ -51,7 +54,7 @@ class ProdutoController:
         if not produtos:
             return make_response(jsonify({"erro": "Nenhum produto encontrado"}), 404)
         
-        return produtos 
+        return jsonify([produto.to_dict() for produto in produtos])
     
     @staticmethod
     def update_product(id_produto):
@@ -83,7 +86,9 @@ class ProdutoController:
                 "preco": produto.preco,
                 "quantidade": produto.quantidade,
                 "status": produto.status, 
-                "imagem": produto.imagem
+                "imagem": produto.imagem,
+                "id_vendedor":produto.id_vendedor
+                
             }
         }), 200)
     

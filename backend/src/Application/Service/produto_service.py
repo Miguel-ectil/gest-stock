@@ -4,17 +4,14 @@ from src.config.data_base import db
 
 class ProdutoService:
     @staticmethod
-    def create_product(name, preco, quantidade, imagem, status=True):
-        new_produto = ProdutoDomain(
-            name, preco, quantidade, imagem, status
-        )
-
+    def create_product(name, preco, quantidade, imagem, status, id_vendedor):
         produto = Produto(
-            name=new_produto.name,
-            preco=new_produto.preco,
-            quantidade=new_produto.quantidade,
-            imagem=new_produto.imagem,
-            status=new_produto.status
+            name=name,
+            preco=preco,
+            quantidade=quantidade,
+            imagem=imagem,
+            status=status,
+            id_vendedor=id_vendedor
         )
 
         db.session.add(produto)

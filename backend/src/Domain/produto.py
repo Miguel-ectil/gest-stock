@@ -1,7 +1,7 @@
 class ProdutoDomain:
     def __init__(self, name, preco, quantidade, status, imagem):
         self.name = name
-        self.preço = preco
+        self.preco = preco
         self.quantidade = quantidade
         self.status = status
         self.imagem = imagem

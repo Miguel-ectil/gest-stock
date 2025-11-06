@@ -9,7 +9,7 @@ class Produto(db.Model):
     preco = Column(Integer, nullable=False) 
     quantidade = Column(Integer, nullable=False)
     status = Column(Boolean, default=True)
-    imagem = Column(String(255), nullable=False)
+    imagem = Column(String(255), nullable=True)
     id_vendedor = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     vendedor = relationship("User", back_populates="produtos")

@@ -60,4 +60,4 @@ def init_routes(app):
     
     @app.route('/api/products/<int:id_produto>/inactivate', methods=['PATCH'])
     def inactivate_product(id_produto):
-        return ProdutoController.inactivate_product(id_produto)
+        return ProdutoController.inactive_product(id_produto)
