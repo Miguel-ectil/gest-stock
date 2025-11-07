@@ -1,4 +1,5 @@
 from src.Application.Controllers.user_controller import UserController
+from src.Application.Controllers.produto_controller import ProdutoController
 from flask import jsonify, make_response, request
 from src.Application.Utils.auth_utils import token_required
 
@@ -38,3 +39,25 @@ def init_routes(app):
         data = request.json 
         return UserController.login_user(data)
 
+
+#---- rotas produtos ----
+    @app.route('/api/products', methods=['GET'])
+    def list_products():
+
+        return ProdutoController.list_products()
+    
+    @app.route('/api/products/<int:id_produto>', methods=['GET'])
+    def get_product(id_produto):
+        return ProdutoController.get_product(id_produto)
+    
+    @app.route('/api/products', methods=['POST'])
+    def create_product():
+        return ProdutoController.create_product()
+    
+    @app.route('/api/products/<int:id_produto>', methods=['PUT'])
+    def update_product(id_produto):
+            return ProdutoController.update_product(id_produto)
+    
+    @app.route('/api/products/<int:id_produto>/inactivate', methods=['PATCH'])
+    def inactivate_product(id_produto):
+        return ProdutoController.inactive_product(id_produto)

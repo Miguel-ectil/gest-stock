@@ -28,15 +28,6 @@ class UserController:
 
         return make_response(jsonify({
             "mensagem": "Usuário criado com sucesso.",
-            # "usuario": {
-            #     "id": user.id,
-            #     "name": user.name,
-            #     "cnpj": user.cnpj,
-            #     "email": user.email,
-            #     "celular": user.celular,
-            #     "status": user.status,
-            #     "confirmed": user.confirmed
-            # }
         }), 201)
 
     @staticmethod
@@ -122,11 +113,4 @@ class UserController:
         return make_response(jsonify({
             "mensagem": response["message"],
             "token": token,
-            # "usuario": {
-            #     "id": user.id,
-            #     "name": user.name,
-            #     "email": user.email,
-            #     "status": user.status,
-            #     "confirmed": user.confirmed
-            # }
         }), 200)

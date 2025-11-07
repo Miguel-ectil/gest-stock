@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from src.config.data_base import db 
 class User(db.Model):
     __tablename__ = 'users'
@@ -11,6 +12,8 @@ class User(db.Model):
     status = Column(Boolean, default=False)
     token = Column(String(6), nullable=True)      
     confirmed = Column(Boolean, default=False)
+
+    produtos = relationship("Produto", back_populates="vendedor")
 
     def to_dict(self):
         return {
