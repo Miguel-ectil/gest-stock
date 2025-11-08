@@ -113,4 +113,8 @@ class UserController:
         return make_response(jsonify({
             "mensagem": response["message"],
             "token": token,
+            "usuario": {
+                "id": user.id,
+                "nome": user.name,
+            }
         }), 200)
