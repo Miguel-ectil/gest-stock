@@ -4,6 +4,26 @@ from flask import jsonify, make_response, request
 from src.Application.Utils.auth_utils import token_required
 
 def init_routes(app):    
+    @app.errorhandler(Exception)
+    def handle_global_error(error):
+        print(f"Erro interno: {str(error)}") 
+        return make_response(jsonify({
+            "erro": "Erro interno do servidor"
+        }), 500)
+    
+    @app.errorhandler(404)
+    def handle_not_found(error):
+        return make_response(jsonify({
+            "erro": "Endpoint não encontrado"
+        }), 404)
+    
+    @app.errorhandler(405)
+    def handle_method_not_allowed(error):
+        return make_response(jsonify({
+            "erro": "Método não permitido"
+        }), 405)
+    
+
     @app.route('/api', methods=['GET'])
     def health():
         return make_response(jsonify({
