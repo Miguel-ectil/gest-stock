@@ -103,32 +103,32 @@ class UserController:
             print(f"Erro ao atualizar usuário: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao atualizar usuário"}), 500)
 
-@staticmethod
-def login_user(data):
-    try:
-        email = data.get('email')
-        password = data.get('password')
+    @staticmethod
+    def login_user(data):
+        try:
+            email = data.get('email')
+            password = data.get('password')
 
-        if not email or not password:
-            return make_response(jsonify({"erro": "Email e senha são obrigatórios"}), 400)
+            if not email or not password:
+                return make_response(jsonify({"erro": "Email e senha são obrigatórios"}), 400)
 
-        response = UserService.login_user(email, password)
+            response = UserService.login_user(email, password)
 
-        if not response["success"]:
-            return make_response(jsonify({"erro": response["message"]}), 401)
+            if not response["success"]:
+                return make_response(jsonify({"erro": response["message"]}), 401)
 
-        user = response["user"]
-        token = generate_token(user.id)
+            user = response["user"]
+            token = generate_token(user.id)
 
-        return make_response(jsonify({
-            "mensagem": response["message"],
-            "token": token,
-            "usuario": {
-                "id": user.id,
-                "nome": user.name,
-            }
-        }), 200)
+            return make_response(jsonify({
+                "mensagem": response["message"],
+                "token": token,
+                "usuario": {
+                    "id": user.id,
+                    "nome": user.name,
+                }
+            }), 200)
 
-    except Exception as e:
-        print(f"Erro no login: {str(e)}")
-        return make_response(jsonify({"erro": "Falha no login"}), 500)
+        except Exception as e:
+            print(f"Erro no login: {str(e)}")
+            return make_response(jsonify({"erro": "Falha no login"}), 500)
