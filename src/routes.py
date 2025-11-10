@@ -1,3 +1,4 @@
+from src.Application.Controllers.venda_controller import VendaController
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.produto_controller import ProdutoController
 from flask import jsonify, make_response, request
@@ -81,3 +82,24 @@ def init_routes(app):
     @app.route('/api/products/<int:id_produto>/inactivate', methods=['PATCH'])
     def inactivate_product(id_produto):
         return ProdutoController.inactive_product(id_produto)
+    
+#---- rotas vendas ----
+    @app.route('/api/sales', methods=['POST'])
+    @token_required
+    def create_sale(current_user_id):
+        return VendaController.create_venda(current_user_id)
+    
+    @app.route('/api/sales/<int:id_venda>', methods=['GET'])
+    @token_required
+    def get_sale(current_user_id, id_venda):
+        return VendaController.get_venda(current_user_id, id_venda)
+    
+    @app.route('/api/sales/my-sales', methods=['GET'])
+    @token_required
+    def list_my_sales(current_user_id):
+        return VendaController.list_vendas_vendedor(current_user_id)
+    
+    @app.route('/api/sales/product/<int:id_produto>', methods=['GET'])
+    @token_required
+    def list_sales_by_product(current_user_id, id_produto):
+        return VendaController.list_vendas_produto(current_user_id, id_produto)
