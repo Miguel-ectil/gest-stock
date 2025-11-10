@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from src.config.data_base import init_db, db
-from src.routes import init_routes
+from routes import init_routes
 from src.Infrastructure.Model.user import User
 from src.Infrastructure.Model.produto import Produto
 from src.Infrastructure.Model.venda import Venda
-
 
 def create_app():
     """
