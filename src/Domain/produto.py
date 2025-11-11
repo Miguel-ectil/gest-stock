@@ -5,6 +5,8 @@ class ProdutoDomain:
         self.quantidade = quantidade
         self.status = status
         self.imagem = imagem
+
+        #ajustar imagem.
         
     def to_dict(self):
         return {
@@ -14,3 +16,4 @@ class ProdutoDomain:
             "status": self.status,  
             "imagem": self.imagem
         }
+    

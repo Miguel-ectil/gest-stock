@@ -10,6 +10,7 @@ class Produto(db.Model):
     quantidade = Column(Integer, nullable=False)
     status = Column(Boolean, default=True)
     imagem = Column(String(255), nullable=True)
+    #ajustar imagem
     id_vendedor = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     vendedor = relationship("User", back_populates="produtos")
