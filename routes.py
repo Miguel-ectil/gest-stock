@@ -1,9 +1,30 @@
+from src.Application.Controllers.venda_controller import VendaController
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.produto_controller import ProdutoController
 from flask import jsonify, make_response, request
 from src.Application.Utils.auth_utils import token_required
 
 def init_routes(app):    
+    @app.errorhandler(Exception)
+    def handle_global_error(error):
+        print(f"Erro interno: {str(error)}") 
+        return make_response(jsonify({
+            "erro": "Erro interno do servidor"
+        }), 500)
+    
+    @app.errorhandler(404)
+    def handle_not_found(error):
+        return make_response(jsonify({
+            "erro": "Endpoint não encontrado"
+        }), 404)
+    
+    @app.errorhandler(405)
+    def handle_method_not_allowed(error):
+        return make_response(jsonify({
+            "erro": "Método não permitido"
+        }), 405)
+    
+
     @app.route('/api', methods=['GET'])
     def health():
         return make_response(jsonify({
@@ -61,3 +82,24 @@ def init_routes(app):
     @app.route('/api/products/<int:id_produto>/inactivate', methods=['PATCH'])
     def inactivate_product(id_produto):
         return ProdutoController.inactive_product(id_produto)
+    
+#---- rotas vendas ----
+    @app.route('/api/sales', methods=['POST'])
+    @token_required
+    def create_sale(current_user_id):
+        return VendaController.create_venda(current_user_id)
+    
+    @app.route('/api/sales/<int:id_venda>', methods=['GET'])
+    @token_required
+    def get_sale(current_user_id, id_venda):
+        return VendaController.get_venda(current_user_id, id_venda)
+    
+    @app.route('/api/sales/my-sales', methods=['GET'])
+    @token_required
+    def list_my_sales(current_user_id):
+        return VendaController.list_vendas_vendedor(current_user_id)
+    
+    @app.route('/api/sales/product/<int:id_produto>', methods=['GET'])
+    @token_required
+    def list_sales_by_product(current_user_id, id_produto):
+        return VendaController.list_vendas_produto(current_user_id, id_produto)

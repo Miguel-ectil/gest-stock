@@ -1,14 +1,14 @@
-version: '3'
+version: '3.8'
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "5000:5000"
-    volumes:
-      - .:/src
     environment:
-      FLASK_APP: run.py
-      FLASK_ENV: development
-      FLASK_RUN_HOST: 0.0.0.0
+      - FLASK_APP=run.py
+      - FLASK_ENV=production
+      - PYTHONPATH=/app/src
+    volumes:
+      # Remove o volume de desenvolvimento ou ajuste conforme necessidade
+      - ./database.sqlite:/app/src/database.sqlite
+    restart: unless-stopped

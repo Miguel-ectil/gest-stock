@@ -1,13 +1,23 @@
-FROM python:3.8-slim
-WORKDIR /src
-COPY requirements.txt requirements.txt
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /src
+COPY . .
 
-EXPOSE 8000
+RUN mkdir -p /app/src
 
-ENV FLASK_RUN_HOST=0.0.0.0
+EXPOSE 5000
 
-CMD ["flask", "run"]
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=production
+ENV PYTHONPATH=/app/src
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
