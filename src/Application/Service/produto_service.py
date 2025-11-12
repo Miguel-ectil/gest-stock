@@ -4,7 +4,11 @@ from src.config.data_base import db
 
 class ProdutoService:
     @staticmethod
-    def create_product(name, preco, quantidade, imagem, status, id_vendedor):
+    def create_product(name, preco, quantidade, imagem=None, status=True, id_vendedor=None,
+                       descricao=None, categoria=None, sku=None, desconto=None):
+        """
+        Cria um produto com campos básicos adicionais.
+        """
         try:
             produto = Produto(
                 name=name,
@@ -12,7 +16,11 @@ class ProdutoService:
                 quantidade=quantidade,
                 imagem=imagem,
                 status=status,
-                id_vendedor=id_vendedor
+                id_vendedor=id_vendedor,
+                descricao=descricao,
+                categoria=categoria,
+                sku=sku,
+                desconto=desconto
             )
 
             db.session.add(produto)
@@ -30,7 +38,8 @@ class ProdutoService:
             raise e
     
     @staticmethod    
-    def update_product(id_produto, name=None, preco=None, quantidade=None, status=None, imagem=None):                       
+    def update_product(id_produto, name=None, preco=None, quantidade=None, status=None, imagem=None,
+                       descricao=None, categoria=None, sku=None, desconto=None):                       
         try:
             produto = Produto.query.get(id_produto)   
             if not produto:
@@ -46,6 +55,14 @@ class ProdutoService:
                 produto.status = status
             if imagem is not None:                
                 produto.imagem = imagem
+            if descricao is not None:
+                produto.descricao = descricao
+            if categoria is not None:
+                produto.categoria = categoria
+            if sku is not None:
+                produto.sku = sku
+            if desconto is not None:
+                produto.desconto = desconto
 
             db.session.commit()        
             return produto

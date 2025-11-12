@@ -14,11 +14,16 @@ class ProdutoController:
             quantidade = data.get('quantidade')
             imagem = data.get('imagem')
             status = data.get('status', True)
+            id_vendedor = data.get('id_vendedor')
+
+            # Novos campos
+            descricao = data.get('descricao')
+            categoria = data.get('categoria')
+            sku = data.get('sku')
+            desconto = data.get('desconto')
 
             if not name or preco is None or quantidade is None:
                 return make_response(jsonify({"erro": "Campos obrigatórios faltando"}), 400)
-
-            id_vendedor = data.get('id_vendedor')
 
             produto = ProdutoService.create_product(
                 name=name,
@@ -26,11 +31,30 @@ class ProdutoController:
                 quantidade=quantidade,
                 imagem=imagem,
                 status=status,
-                id_vendedor=id_vendedor
+                id_vendedor=id_vendedor,
+                descricao=descricao,
+                categoria=categoria,
+                sku=sku,
+                desconto=desconto
             )
+
             return make_response(jsonify({
                 "mensagem": "Produto criado com sucesso.",
+                "produto": {
+                    "id_produto": produto.id_produto,
+                    "name": produto.name,
+                    "preco": produto.preco,
+                    "quantidade": produto.quantidade,
+                    "status": produto.status,
+                    "imagem": produto.imagem,
+                    "id_vendedor": produto.id_vendedor,
+                    "descricao": produto.descricao,
+                    "categoria": produto.categoria,
+                    "sku": produto.sku,
+                    "desconto": produto.desconto
+                }
             }), 201)
+
         except Exception as e:
             print(f"Erro ao criar produto: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao criar produto"}), 500)
@@ -49,7 +73,11 @@ class ProdutoController:
                 "quantidade": produto.quantidade,
                 "status": produto.status, 
                 "imagem": produto.imagem,
-                "id_vendedor":produto.id_vendedor
+                "id_vendedor": produto.id_vendedor,
+                "descricao": produto.descricao,
+                "categoria": produto.categoria,
+                "sku": produto.sku,
+                "desconto": produto.desconto
             }), 200)
         except Exception as e:
             print(f"Erro ao buscar produto: {str(e)}")
@@ -62,7 +90,19 @@ class ProdutoController:
             if not produtos:
                 return make_response(jsonify({"erro": "Nenhum produto encontrado"}), 404)
             
-            return jsonify([produto.to_dict() for produto in produtos])
+            return jsonify([{
+                "id": p.id_produto,
+                "name": p.name,
+                "preco": p.preco,
+                "quantidade": p.quantidade,
+                "status": p.status,
+                "imagem": p.imagem,
+                "id_vendedor": p.id_vendedor,
+                "descricao": p.descricao,
+                "categoria": p.categoria,
+                "sku": p.sku,
+                "desconto": p.desconto
+            } for p in produtos])
         except Exception as e:
             print(f"Erro ao listar produtos: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao listar produtos"}), 500)
@@ -74,11 +114,16 @@ class ProdutoController:
             if not data:
                 return make_response(jsonify({"erro": "Dados JSON inválidos ou não fornecidos"}), 400)
 
+            # Campos a atualizar
             name = data.get('name')
             preco = data.get('preco')
             quantidade = data.get('quantidade')
             status = data.get('status')
             imagem = data.get('imagem')
+            descricao = data.get('descricao')
+            categoria = data.get('categoria')
+            sku = data.get('sku')
+            desconto = data.get('desconto')
 
             produto = ProdutoService.update_product(
                 id_produto,
@@ -86,7 +131,11 @@ class ProdutoController:
                 preco=preco,
                 quantidade=quantidade,
                 status=status,
-                imagem=imagem
+                imagem=imagem,
+                descricao=descricao,
+                categoria=categoria,
+                sku=sku,
+                desconto=desconto
             )
 
             if not produto:
@@ -101,7 +150,11 @@ class ProdutoController:
                     "quantidade": produto.quantidade,
                     "status": produto.status, 
                     "imagem": produto.imagem,
-                    "id_vendedor":produto.id_vendedor
+                    "id_vendedor": produto.id_vendedor,
+                    "descricao": produto.descricao,
+                    "categoria": produto.categoria,
+                    "sku": produto.sku,
+                    "desconto": produto.desconto
                 }
             }), 200)
         except Exception as e:
