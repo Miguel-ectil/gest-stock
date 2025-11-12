@@ -15,6 +15,9 @@ class ProdutoDomain:
         self.desconto = desconto
 
     def to_dict(self):
+        """
+        Converte o objeto de domínio para um dicionário.
+        """
         return {
             "id_produto": self.id_produto,
             "name": self.name,

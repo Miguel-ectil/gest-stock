@@ -82,3 +82,5 @@ class VendaController:
         except Exception as e:
             print(f"Erro ao listar vendas do produto: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao listar vendas do produto"}), 500)
+        
+        # preço do produto no momento da venda
