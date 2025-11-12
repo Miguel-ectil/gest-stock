@@ -3,8 +3,7 @@ from src.Application.Service.venda_service import VendaService
 from src.Application.Utils.auth_utils import token_required
 
 class VendaController:
-    @staticmethod
-    @token_required
+    # @token_required
     def create_venda(current_user_id):
         try:
             data = request.get_json()
@@ -35,8 +34,7 @@ class VendaController:
             print(f"Erro ao criar venda: {str(e)}")
             return make_response(jsonify({"erro": str(e)}), 400)
 
-    @staticmethod
-    @token_required
+    # @token_required
     def get_venda(current_user_id, id_venda):
         try:
             venda = VendaService.get_venda(id_venda)
@@ -54,8 +52,7 @@ class VendaController:
             print(f"Erro ao buscar venda: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao buscar venda"}), 500)
 
-    @staticmethod
-    @token_required
+    # @token_required
     def list_vendas_vendedor(current_user_id):
         try:
             vendas = VendaService.list_vendas_by_vendedor(current_user_id)
@@ -68,11 +65,9 @@ class VendaController:
             print(f"Erro ao listar vendas: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao listar vendas"}), 500)
 
-    @staticmethod
     @token_required
     def list_vendas_produto(current_user_id, id_produto):
         try:
-            # Aqui dicionar lógica para verificar permissões
             vendas = VendaService.list_vendas_by_produto(id_produto)
             
             return make_response(jsonify({
@@ -82,5 +77,3 @@ class VendaController:
         except Exception as e:
             print(f"Erro ao listar vendas do produto: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao listar vendas do produto"}), 500)
-        
-        # preço do produto no momento da venda

@@ -14,7 +14,11 @@ def create_app():
     init_db(app)
     init_routes(app)  
 
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+    CORS(
+        app,
+        resources={r"/*": {"origins": ["http://localhost:3000", "https://gest-stock-front.vercel.app"]}},
+        supports_credentials=True
+    )
 
     return app
 
