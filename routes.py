@@ -1,3 +1,4 @@
+from src.Application.Controllers.dashboard_controller import DashboardController
 from src.Application.Controllers.venda_controller import VendaController
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.produto_controller import ProdutoController
@@ -103,3 +104,10 @@ def init_routes(app):
     @token_required
     def list_sales_by_product(current_user_id, id_produto):
         return VendaController.list_vendas_produto(current_user_id, id_produto)
+    
+    #---- rota dashboard ----
+    @app.route('/api/dashboard', methods=['GET'])
+    @token_required
+    def get_dashboard_data(current_user_id):
+        print(f"Id veio carai {current_user_id}")
+        return DashboardController.get_dashboard_data(current_user_id)
