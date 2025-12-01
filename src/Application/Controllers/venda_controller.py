@@ -77,3 +77,24 @@ class VendaController:
         except Exception as e:
             print(f"Erro ao listar vendas do produto: {str(e)}")
             return make_response(jsonify({"erro": "Falha ao listar vendas do produto"}), 500)
+
+    @token_required
+    def devolucao_venda(current_user_id, id_venda):
+        try:
+            venda = VendaService.get_venda(id_venda)
+            if not venda:
+                return make_response(jsonify({"erro": "Venda não encontrada"}), 404)
+
+            if venda.id_vendedor != int(current_user_id):
+                return make_response(jsonify({"erro": "Acesso negado"}), 403)
+
+            VendaService.marcar_devolucao(id_venda)
+
+            return make_response(jsonify({
+                "mensagem": "Devolução registrada com sucesso",
+                "venda": venda.to_dict()
+            }), 200)
+            
+        except Exception as e:
+            print(f"Erro ao registrar devolução: {str(e)}")
+            return make_response(jsonify({"erro": str(e)}), 400)

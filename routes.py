@@ -111,3 +111,9 @@ def init_routes(app):
     def get_dashboard_data(current_user_id):
         print(f"Id veio carai {current_user_id}")
         return DashboardController.get_dashboard_data(current_user_id)
+    
+#---- devolução de venda ----
+    @app.route('/api/sales/<int:id_venda>', methods=['POST'])
+    @token_required
+    def return_sale(current_user_id, id_venda):
+        return VendaController.devolucao_venda(current_user_id, id_venda)

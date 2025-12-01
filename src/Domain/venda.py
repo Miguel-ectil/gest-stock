@@ -4,3 +4,5 @@ class VendaDomain:
         self.id_vendedor = id_vendedor
         self.quantidade = quantidade
         self.preco_unitario = preco_unitario
+        self.devolucao = False
+        

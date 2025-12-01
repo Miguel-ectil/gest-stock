@@ -73,3 +73,22 @@ class VendaService:
             return Venda.query.all()
         except Exception as e:
             raise e
+        
+    @staticmethod
+    def marcar_devolucao(id_venda):
+        try:
+            venda = Venda.query.get(id_venda)
+            if not venda:
+                raise Exception("Venda não encontrada")
+            
+            venda.devolucao = True
+            
+            produto = Produto.query.get(venda.id_produto)
+            produto.quantidade += venda.quantidade
+            
+            db.session.commit()
+            
+            return venda
+        except Exception as e:
+            db.session.rollback()
+            raise e

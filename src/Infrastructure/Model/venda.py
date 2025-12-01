@@ -10,6 +10,7 @@ class Venda(db.Model):
     quantidade = db.Column(db.Integer, nullable=False)
     preco_unitario = db.Column(db.Float, nullable=False)
     data_venda = db.Column(db.DateTime, default=datetime.utcnow)
+    devolucao = db.Column(db.Boolean, default=False)
     
     produto = db.relationship('Produto', backref='vendas')
     vendedor = db.relationship('User', backref='vendas')
@@ -23,5 +24,6 @@ class Venda(db.Model):
             "preco_unitario": self.preco_unitario,
             "data_venda": self.data_venda.isoformat() if self.data_venda else None,
             "nome_produto": self.produto.name if self.produto else None,
-            "nome_vendedor": self.vendedor.name if self.vendedor else None
+            "nome_vendedor": self.vendedor.name if self.vendedor else None,
+            "devolucao": self.devolucao
         }
